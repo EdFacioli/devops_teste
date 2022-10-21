@@ -4,7 +4,8 @@ COPY app .
 RUN go mod tidy
 RUN go build -o app .
 
-FROM alpine:latest
+FROM alpine:3.16
 WORKDIR /app
+RUN apk add --no-cache curl
 COPY --from=builder /builder/app .
 ENTRYPOINT [ "./app" ]
