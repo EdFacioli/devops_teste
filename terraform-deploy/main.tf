@@ -28,10 +28,8 @@ resource "aws_ecs_task_definition" "main" {
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-create-group": "true",
           "awslogs-group": "${aws_cloudwatch_log_group.main.id}",
-          "awslogs-region": "sa-east-1",
-          "awslogs-stream-prefix": "${var.app_name}-${var.environment_id}"
+          "awslogs-region": "sa-east-1"
         },
         "secretOptions": []
       },
@@ -71,7 +69,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   name               = "${var.app_name}-execution-task-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role_policy.json
   tags = {
-    Name        = "${var.app_name}-iam-role"
+    Name        = "${var.app_name}-execution-task-role"
     Environment = var.environment_id
   }
 }
@@ -97,7 +95,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
-resource "aws_iam_role_policy_attachment" "awas_ops_works_cloud_watch_logs" {
+resource "aws_iam_role_policy_attachment" "ecs_aws_ops_works_cloud_watch_logs" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs" 
 }
@@ -157,14 +155,14 @@ resource "aws_security_group" "service" {
 
 # Loadbalancer
 resource "aws_alb" "main" {
-  name               = "${var.app_name}-alb"
+  name               = "${var.app_name}-main"
   internal           = false
   load_balancer_type = "application"
   subnets            = var.subnets_public
   security_groups    = [aws_security_group.load_balancer.id]
 
   tags = {
-    Name        = "${var.app_name}-alb"
+    Name        = "${var.app_name}-main"
     Environment = var.environment_id
   }
 }
@@ -195,7 +193,7 @@ resource "aws_security_group" "load_balancer" {
 }
 
 resource "aws_lb_target_group" "main" {
-  name                 = "${var.app_name}-target-group"
+  name                 = "${var.app_name}-main"
   port                 = 80
   protocol             = "HTTP"
   target_type          = "ip"
@@ -213,7 +211,7 @@ resource "aws_lb_target_group" "main" {
   }
 
   tags = {
-    Name        = "${var.app_name}-target-group"
+    Name        = "${var.app_name}-main"
     Environment = var.environment_id
   }
 }
