@@ -14,5 +14,4 @@ module "ecs" {
   source = "./modules/ecs"
 
   environment_id  = var.environment_id
-  app_name        = var.app_name 
 }
