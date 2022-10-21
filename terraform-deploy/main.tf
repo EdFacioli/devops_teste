@@ -19,6 +19,12 @@ resource "aws_ecs_task_definition" "main" {
           }
         ],
       "essential": true,
+      "healthCheck": {
+        "command": [ "CMD-SHELL", "curl -f http://localhost:${var.container_port}/ping || exit 1" ],
+        "interval": 20,
+        "timeout": 5,
+        "retries": 10
+      },
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
