@@ -1,2 +1,0 @@
-variable "repository_name" {
-}

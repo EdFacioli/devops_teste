@@ -1,4 +1,4 @@
-resource "aws_subnet" "main_public" {
+resource "aws_subnet" "public" {
   count = var.max_azone != 0 ? var.max_azone : local.azone_count
 
   vpc_id                  = aws_vpc.main.id
@@ -13,7 +13,7 @@ resource "aws_subnet" "main_public" {
   }
 }
 
-resource "aws_subnet" "main_private" {
+resource "aws_subnet" "private" {
   count = var.max_azone != 0 ? var.max_azone : local.azone_count
 
   vpc_id                  = aws_vpc.main.id
