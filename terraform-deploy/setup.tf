@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket = "terraform-state-amopromo-deploy"
+    bucket = "terraform-state-devopschallenge-deploy"
     key    = "terraform/terraform.tfstate"
-    region = "sa-east-1"
+    region = "us-east-2"
   }
   
   required_providers {
@@ -14,5 +14,5 @@ terraform {
 }
 
 provider "aws" {
-    region = "sa-east-1"
+    region = "us-east-2"
 }
